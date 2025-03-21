@@ -6,15 +6,15 @@ COPY custom-plugins.txt /tmp/custom-plugins.txt
 
 # Install Plugin Manager
 RUN curl -L https://jmeter-plugins.org/get/ \
-    -o /opt/apache-jmeter/lib/ext/jmeter-plugins-manager.jar
+    -o /opt/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-manager.jar
 
 # Read plugins.txt, convert to comma-separated, install standard plugins
 RUN JMETER_PLUGINS=$(paste -sd, /tmp/plugins.txt) \
-    && /opt/apache-jmeter/bin/PluginsManagerCMD.sh install $JMETER_PLUGINS
+    && /opt/apache-jmeter-5.6.3/bin/PluginsManagerCMD.sh install $JMETER_PLUGINS
 
 # Download custom plugins
 RUN while read url; do \
-      curl -L $url -o /opt/apache-jmeter/lib/ext/$(basename $url); \
+      curl -L $url -o /opt/apache-jmeter-5.6.3/lib/ext/$(basename $url); \
     done < /tmp/custom-plugins.txt
 
-ENTRYPOINT ["/opt/apache-jmeter/bin/jmeter"]
+ENTRYPOINT ["/entrypoint.sh"]
