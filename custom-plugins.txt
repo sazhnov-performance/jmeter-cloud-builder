@@ -1,0 +1,1 @@
+https://github.com/your-org/your-plugin/releases/download/v1.0/your-plugin.jar

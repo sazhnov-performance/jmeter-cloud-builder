@@ -1,0 +1,34 @@
+
+name: Build & Push JMeter Docker
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  DOCKERHUB_USERNAME: your_dockerhub_username
+  IMAGE_NAME: jmeter-custom
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Read standard plugins list
+        id: plugins
+        run: echo "JMETER_PLUGINS=$(paste -sd, plugins.txt)" >> $GITHUB_ENV
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image with plugins baked in
+        run: |
+          docker build             --build-arg JMETER_PLUGINS=${{ env.JMETER_PLUGINS }}             -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .
+
+      - name: Push to Docker Hub
+        run: docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
