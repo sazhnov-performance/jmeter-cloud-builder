@@ -1,2 +1,1 @@
-jpgc-casutg
-jpgc-dummy
+jpgc-standard
