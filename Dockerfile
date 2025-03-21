@@ -18,7 +18,6 @@ RUN curl -L https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.ja
 RUN JMETER_PLUGINS=$(paste -sd, /tmp/plugins.txt) \
     && /opt/apache-jmeter-5.6.3/bin/PluginsManagerCMD.sh install $JMETER_PLUGINS
 
-
 # Download custom plugins
 RUN while read url; do \
       curl -L $url -o /opt/apache-jmeter-5.6.3/lib/ext/$(basename $url); \
