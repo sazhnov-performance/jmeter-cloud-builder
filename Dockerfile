@@ -9,6 +9,8 @@ RUN curl -L https://jmeter-plugins.org/get/ \
     -o /opt/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-manager.jar
 RUN java -cp /opt/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
 
+RUN ls -l /opt/apache-jmeter-5.6.3/bin/
+
 # Read plugins.txt, convert to comma-separated, install standard plugins
 RUN JMETER_PLUGINS=$(paste -sd, /tmp/plugins.txt) \
     && /opt/apache-jmeter-5.6.3/bin/PluginsManagerCMD.sh install $JMETER_PLUGINS
