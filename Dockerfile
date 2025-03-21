@@ -11,6 +11,9 @@ RUN java -cp /opt/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-manager.jar org.jme
 
 RUN ls -l /opt/apache-jmeter-5.6.3/bin/
 
+RUN curl -L https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar \
+    -o /opt/apache-jmeter-5.6.3/lib/cmdrunner-2.3.jar
+
 # Read plugins.txt, convert to comma-separated, install standard plugins
 RUN JMETER_PLUGINS=$(paste -sd, /tmp/plugins.txt) \
     && /opt/apache-jmeter-5.6.3/bin/PluginsManagerCMD.sh install $JMETER_PLUGINS
