@@ -1,5 +1,30 @@
+FROM alpine
 
-FROM alpine/jmeter:5.6.3
+ARG JMETER_VERSION="5.6.3"
+ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
+ENV JMETER_BIN ${JMETER_HOME}/bin
+ENV JMETER_DOWNLOAD_URL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
+
+# Install Java 21 and other required packages
+ARG TZ="Europe/Amsterdam"
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache ca-certificates tzdata curl unzip bash nss openjdk21-jre \
+    && update-ca-certificates \
+    && rm -rf /var/cache/apk/* \
+    && mkdir -p /tmp/dependencies \
+    && curl -L --silent ${JMETER_DOWNLOAD_URL} -o /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz \
+    && mkdir -p /opt \
+    && tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt \
+    && rm -rf /tmp/dependencies
+
+# Set JAVA_HOME and update PATH
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+ENV PATH=$PATH:$JMETER_BIN
+
+COPY entrypoint.sh /
+
+WORKDIR ${JMETER_HOME}
 
 COPY plugins.txt /tmp/plugins.txt
 COPY custom-plugins.txt /tmp/custom-plugins.txt
