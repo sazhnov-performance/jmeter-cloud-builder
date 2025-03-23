@@ -22,5 +22,6 @@ RUN JMETER_PLUGINS=$(paste -sd, /tmp/plugins.txt) \
 RUN while read url; do \
       curl -L $url -o /opt/apache-jmeter-5.6.3/lib/ext/$(basename $url); \
     done < /tmp/custom-plugins.txt
+RUN ls -l /opt/apache-jmeter-5.6.3/lib/ext/
 
 ENTRYPOINT ["/entrypoint.sh"]
