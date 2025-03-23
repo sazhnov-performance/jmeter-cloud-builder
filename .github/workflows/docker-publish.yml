@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker image with plugins baked in
         run: |
-          docker build             --build-arg JMETER_PLUGINS=${{ env.JMETER_PLUGINS }}             -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .
+          docker build             --build-arg JMETER_PLUGINS=${{ env.JMETER_PLUGINS }}             -t $DOCKERHUB_USERNAME/$IMAGE_NAME:5.6.3 .
 
       - name: Push to Docker Hub
         run: docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:5.6.3
