@@ -1,7 +1,7 @@
 # -----------------------------
 # Base image with JDK (no manual Java install needed)
 # -----------------------------
-FROM openjdk:21-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 # -----------------------------
 # Arguments / environment
