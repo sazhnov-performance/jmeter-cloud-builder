@@ -1,1 +1,2 @@
 jpgc-standard
+jpgc-cmd
