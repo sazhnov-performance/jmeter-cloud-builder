@@ -1,4 +1,4 @@
-ROM alpine
+FROM alpine
 
 ARG JMETER_VERSION="5.6.3"
 ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
