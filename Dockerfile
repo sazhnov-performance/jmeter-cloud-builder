@@ -51,5 +51,20 @@ RUN JMETER_PLUGINS=$(paste -sd, /tmp/plugins.txt) \
 RUN while read url; do \
       curl -L $url -o /opt/apache-jmeter-${JMETER_VERSION}/lib/ext/$(basename $url); \
     done < /tmp/custom-plugins.txt
-
+# JMeterPluginsCMD generates report CSVs using Swing/AWT components.
+# Ensure fontconfig + a basic font set are available to avoid:
+# "Fontconfig head is null, check your fonts or fonts configuration"
+RUN set -eux; \
+    if command -v apt-get >/dev/null 2>&1; then \
+      apt-get update; \
+      DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        fontconfig \
+        fonts-dejavu-core; \
+      rm -rf /var/lib/apt/lists/*; \
+    elif command -v apk >/dev/null 2>&1; then \
+      apk add --no-cache \
+        fontconfig \
+        ttf-dejavu; \
+    fi
+    
 ENTRYPOINT ["/entrypoint.sh"]
